@@ -42,7 +42,6 @@ import (
 	"github.com/liqotech/liqo/pkg/route"
 	argsutils "github.com/liqotech/liqo/pkg/utils/args"
 	flagsutils "github.com/liqotech/liqo/pkg/utils/flags"
-	"github.com/liqotech/liqo/pkg/utils/kernel"
 	kernelversion "github.com/liqotech/liqo/pkg/utils/kernel/version"
 	"github.com/liqotech/liqo/pkg/utils/mapper"
 	"github.com/liqotech/liqo/pkg/utils/resource"
@@ -105,16 +104,6 @@ func run(cmd *cobra.Command, _ []string) error {
 		if err := kernelversion.CheckKernelVersion(&connoptions.GwOptions.MinimumKernelVersion); err != nil {
 			return fmt.Errorf("kernel version check failed: %w, disable this check with --%s", err, gateway.FlagNameDisableKernelVersionCheck)
 		}
-	}
-
-	// Enable ip_forwarding.
-	if err = kernel.EnableIPForwarding(); err != nil {
-		return err
-	}
-
-	// Disable rp_filter.
-	if err = kernel.DisableRtFilter(); err != nil {
-		return err
 	}
 
 	// Set controller-runtime logger.
